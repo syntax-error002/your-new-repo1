@@ -1,6 +1,3 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { createReadStream } from 'fs';
-
 export const config = {
   api: {
     bodyParser: true,
@@ -16,6 +13,11 @@ export default async function handler(req, res) {
 
   if (!videoUrl) {
     return res.status(400).json({ error: 'Missing videoUrl in request body' });
+  }
+
+  // Check environment variables
+  if (!process.env.MUX_TOKEN_ID || !process.env.MUX_TOKEN_SECRET) {
+    return res.status(500).json({ error: 'MUX credentials not set in environment' });
   }
 
   const mux = require('@mux/mux-node');
