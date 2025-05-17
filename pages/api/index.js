@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing videoUrl in request body' });
   }
 
-  // Check environment variables
+  // Environment variables must be set in your Vercel dashboard (.env file will not work after deployment)
   if (!process.env.MUX_TOKEN_ID || !process.env.MUX_TOKEN_SECRET) {
     return res.status(500).json({ error: 'MUX credentials not set in environment' });
   }
@@ -39,6 +39,6 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     console.error('Mux upload error:', error);
-    return res.status(500).json({ error: 'Something went wrong' });
+    return res.status(500).json({ error: 'Something went wrong', details: error.message });
   }
 }
